@@ -7,9 +7,6 @@ const port = 3000;
 app.use(cors())
 app.use(express.json())
 
-
-
-
 const uri = "mongodb+srv://taste-Trail:4AbwBtRoWGdkBKTl@riyad.wtxen74.mongodb.net/?appName=riyad";
 
 const client = new MongoClient(uri, {
@@ -42,9 +39,6 @@ app.get('/reviews/:id',async (req, res)=>{
   })
 })
 
-
-
-
 app.delete('/reviews/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -56,9 +50,20 @@ app.delete('/reviews/:id', async (req, res) => {
   }
 });
 
-
-
-
+app.put('/reviews/:id', async (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+  try {
+    const result = await foodCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedData }
+    );
+    res.send({ success: true, result });
+  } catch (err) {
+    console.log(err);
+    res.send({ success: false, message: err.message });
+  }
+});
 
 
 app.post('/reviews',async (req, res)=>{
