@@ -43,6 +43,24 @@ app.get('/reviews/:id',async (req, res)=>{
 })
 
 
+
+
+app.delete('/reviews/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await foodCollection.deleteOne({ _id: new ObjectId(id) });
+    res.send({ success: true, result });
+  } catch (err) {
+    console.log(err);
+    res.send({ success: false, message: err.message });
+  }
+});
+
+
+
+
+
+
 app.post('/reviews',async (req, res)=>{
     const data = req.body
 const result =await foodCollection.insertOne(data)
