@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = 3000;
 
@@ -31,6 +31,17 @@ app.get('/reviews', async(req, res)=>{
     const result = await foodCollection.find().toArray()
     res.send(result)
 })
+
+
+app.get('/reviews/:id',async (req, res)=>{
+  const {id} = req.params
+  const result = await foodCollection.findOne({_id: new ObjectId(id)})
+  res.send({
+    success: true,
+    result
+  })
+})
+
 
 app.post('/reviews',async (req, res)=>{
     const data = req.body
