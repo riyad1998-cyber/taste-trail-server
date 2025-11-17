@@ -2,13 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
+require ("dotenv").config()
+
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb+srv://taste-Trail:4AbwBtRoWGdkBKTl@riyad.wtxen74.mongodb.net/?appName=riyad";
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@riyad.wtxen74.mongodb.net/?appName=riyad`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -20,7 +22,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db('taste-trail');
     const foodCollection = db.collection('reviews');
 
@@ -69,7 +71,7 @@ async function run() {
       res.send({ success: true, result });
     });
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB successfully!");
   } finally {
     // await client.close();
